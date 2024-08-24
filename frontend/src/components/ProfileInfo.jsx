@@ -9,7 +9,7 @@ import { TfiThought } from "react-icons/tfi";
 import { FaEye } from "react-icons/fa";
 import { formatMemberSince } from "./utils/functions";
 
-const ProfileInfo = (userProfile) => {
+const ProfileInfo = ({ userProfile }) => {
   // const userProfile = {
   //   avatar_url:
   //     "https://ps.w.org/user-avatar-reloaded/assets/icon-256x256.png?rev=2540745",
