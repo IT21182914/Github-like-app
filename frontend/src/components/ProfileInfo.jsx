@@ -8,6 +8,7 @@ import { FaXTwitter } from "react-icons/fa6";
 import { TfiThought } from "react-icons/tfi";
 import { FaEye } from "react-icons/fa";
 import { formatMemberSince } from "./utils/functions";
+import { FaLink } from "react-icons/fa"; // Correct import for FaLink
 
 const ProfileInfo = ({ userProfile }) => {
   // const userProfile = {
@@ -69,6 +70,26 @@ const ProfileInfo = ({ userProfile }) => {
             {userProfile?.location}
           </div>
         ) : null}
+
+        {/* Portfolio */}
+        <a
+          href="https://dilanshanuka999.netlify.app/"
+          target="_blank"
+          rel="noreferrer"
+          className="flex items-center gap-2 hover:text-blue-500"
+        >
+          <FaLink /> Portfolio Website
+        </a>
+
+        {/* Linkedin */}
+        <a
+          href="https://dilanshanuka999.netlify.app/"
+          target="_blank"
+          rel="noreferrer"
+          className="flex items-center gap-2 hover:text-blue-500"
+        >
+          <FaLink /> Linkedin Profile
+        </a>
 
         {/* Twitter Username */}
         {userProfile?.twitter_username ? (
