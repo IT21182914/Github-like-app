@@ -72,24 +72,24 @@ const ProfileInfo = ({ userProfile }) => {
         ) : null}
 
         {/* Portfolio */}
-        <a
+        {/* <a
           href="https://dilanshanuka999.netlify.app/"
           target="_blank"
           rel="noreferrer"
           className="flex items-center gap-2 hover:text-blue-500"
         >
           <FaLink /> Portfolio Website
-        </a>
+        </a> */}
 
         {/* Linkedin */}
-        <a
+        {/* <a
           href="https://dilanshanuka999.netlify.app/"
           target="_blank"
           rel="noreferrer"
           className="flex items-center gap-2 hover:text-blue-500"
         >
           <FaLink /> Linkedin Profile
-        </a>
+        </a> */}
 
         {/* Twitter Username */}
         {userProfile?.twitter_username ? (
