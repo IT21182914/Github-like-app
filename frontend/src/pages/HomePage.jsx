@@ -12,7 +12,7 @@ const HomePage = () => {
   const [repos, setRepos] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const [sortType, setSortType] = useState("forks");
+  const [sortType, setSortType] = useState("recent");
   const user = true;
 
   const getUserProfileAndRepos = useCallback(
@@ -23,7 +23,7 @@ const HomePage = () => {
           `http://api.github.com/users/${username}`
           // {
           //   headers: {
-          //     authorization: `token ${process.env.REACT_APP_GITHUB_TOKEN}`,
+          //     authorization: `token ${import.meta.env.VITE_GITHUB_API_KEY}`,
           //   },
           // }
         );
@@ -32,6 +32,7 @@ const HomePage = () => {
 
         const reposRes = await fetch(userProfile.repos_url);
         const userRepos = await reposRes.json();
+        repos.sort((a, b) => new Date(b.created_at) - new Date(a.created_at)); //descending, most recent first
         setRepos(userRepos);
         // console.log("userProfile", userProfile);
         // console.log("repos", repos);
@@ -64,6 +65,7 @@ const HomePage = () => {
     setUserProfile(userProfile);
     setRepos(userRepos);
     setLoading(false);
+    setSortType("recent");
   };
 
   const onSort = (sortType) => {
