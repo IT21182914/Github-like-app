@@ -13,31 +13,24 @@ const HomePage = () => {
   const [loading, setLoading] = useState(false);
 
   const [sortType, setSortType] = useState("recent");
-  const user = true;
 
   const getUserProfileAndRepos = useCallback(
     async (username = "IT21182914") => {
       setLoading(true);
       try {
-        const userRes = await fetch(
-          `http://api.github.com/users/${username}`
-          // {
-          //   headers: {
-          //     authorization: `token ${import.meta.env.VITE_GITHUB_API_KEY}`,
-          //   },
-          // }
+        const res = await fetch(
+          `http://localhost:5000/api/users/profile/${username}`
         );
-        const userProfile = await userRes.json();
-        setUserProfile(userProfile);
+        const { repos, userProfile } = await res.json();
 
-        const reposRes = await fetch(userProfile.repos_url);
-        const userRepos = await reposRes.json();
         repos.sort((a, b) => new Date(b.created_at) - new Date(a.created_at)); //descending, most recent first
-        setRepos(userRepos);
+
+        setRepos(repos);
+        setUserProfile(userProfile);
         // console.log("userProfile", userProfile);
         // console.log("repos", repos);
 
-        return { userProfile, userRepos };
+        return { userProfile, repos };
       } catch (error) {
         toast.error(error.message);
       } finally {
@@ -58,12 +51,12 @@ const HomePage = () => {
     setRepos([]);
     setUserProfile(null);
 
-    const { userProfile, userRepos } = await getUserProfileAndRepos(username);
+    const { userProfile, repos } = await getUserProfileAndRepos(username);
 
     // console.log("Repos from onSearch", repos);
 
     setUserProfile(userProfile);
-    setRepos(userRepos);
+    setRepos(repos);
     setLoading(false);
     setSortType("recent");
   };
