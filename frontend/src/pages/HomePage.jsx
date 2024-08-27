@@ -19,7 +19,14 @@ const HomePage = () => {
     async (username = "IT21182914") => {
       setLoading(true);
       try {
-        const userRes = await fetch(`http://api.github.com/users/${username}`);
+        const userRes = await fetch(
+          `http://api.github.com/users/${username}`
+          // {
+          //   headers: {
+          //     authorization: `token ${process.env.REACT_APP_GITHUB_TOKEN}`,
+          //   },
+          // }
+        );
         const userProfile = await userRes.json();
         setUserProfile(userProfile);
 
