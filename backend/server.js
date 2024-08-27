@@ -4,6 +4,7 @@ import cors from "cors";
 
 import userRoutes from "./routes/user.route.js";
 import exploreRoutes from "./routes/explore.route.js";
+import connectMongoDB from "./db/connectMongoDB.js";
 
 dotenv.config();
 
@@ -18,7 +19,6 @@ app.use("/api/users", userRoutes);
 app.use("/api/explore", exploreRoutes);
 
 app.listen(5000, () => {
-  console.log("\nServer is running on port 5000");
+  console.log("\nServer is running on port 5000 🔥");
+  connectMongoDB();
 });
-
-//mongodb+srv://dilanshanuka999:1234@cluster0.yxvng.mongodb.net/github?retryWrites=true&w=majority&appName=Cluster0
