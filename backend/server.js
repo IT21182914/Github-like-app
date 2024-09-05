@@ -4,6 +4,8 @@ import cors from "cors";
 
 import userRoutes from "./routes/user.route.js";
 import exploreRoutes from "./routes/explore.route.js";
+import authRoutes from "./routes/auth.route.js";
+
 import connectMongoDB from "./db/connectMongoDB.js";
 
 dotenv.config();
@@ -15,6 +17,7 @@ app.get("/", (req, res) => {
   res.send("Server is ready");
 });
 
+app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/explore", exploreRoutes);
 
