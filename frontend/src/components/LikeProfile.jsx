@@ -16,13 +16,10 @@ const LikeProfile = ({ userProfile }) => {
     }
 
     try {
-      const res = await fetch(
-        `https://github-like-app.vercel.app//api/users/like/${userProfile.login}`,
-        {
-          method: "POST",
-          credentials: "include",
-        }
-      );
+      const res = await fetch(`/api/users/like/${userProfile.login}`, {
+        method: "POST",
+        credentials: "include",
+      });
       const data = await res.json();
 
       if (data.error) throw new Error(data.error);

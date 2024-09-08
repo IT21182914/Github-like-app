@@ -14,9 +14,7 @@ const ExplorePage = () => {
     setLoading(true);
     setRepos([]);
     try {
-      const res = await fetch(
-        "https://github-like-app.vercel.app//api/explore/repos/" + language
-      );
+      const res = await fetch("/api/explore/repos/" + language);
       const { repos } = await res.json();
       setRepos(repos);
       setSelectedLanguage(language);
