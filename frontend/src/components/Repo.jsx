@@ -1,7 +1,7 @@
 import { FaCodeBranch, FaCopy, FaRegStar } from "react-icons/fa";
 import { FaCodeFork } from "react-icons/fa6";
-import { formatDate } from "./utils/functions";
-import { PROGRAMMING_LANGUAGES } from "./utils/constants";
+import { formatDate } from "../utils/functions";
+import { PROGRAMMING_LANGUAGES } from "../utils/constants";
 import { toast } from "react-hot-toast";
 
 const Repo = ({ repo }) => {
