@@ -5,9 +5,16 @@ import { useAuthContext } from "../context/AuthContext";
 const LikeProfile = ({ userProfile }) => {
   const { authUser } = useAuthContext();
 
+  // Check if the current profile is the user's own profile
   const isOwnProfile = authUser?.username === userProfile.login;
 
   const handleLikeProfile = async () => {
+    if (isOwnProfile) {
+      // Show a toast message if the user tries to like their own profile
+      toast.error("You cannot like your own profile!");
+      return;
+    }
+
     try {
       const res = await fetch(`/api/users/like/${userProfile.login}`, {
         method: "POST",
@@ -16,12 +23,13 @@ const LikeProfile = ({ userProfile }) => {
       const data = await res.json();
 
       if (data.error) throw new Error(data.error);
-      toast.success(data.message);
+      toast.success(data.message); // Show success toast when the profile is liked
     } catch (error) {
-      toast.error(error.message);
+      toast.error(error.message); // Show error toast in case of any issues
     }
   };
 
+  // Don't render the like button if the user is not authenticated or if it's their own profile
   if (!authUser || isOwnProfile) return null;
 
   return (
@@ -33,4 +41,5 @@ const LikeProfile = ({ userProfile }) => {
     </button>
   );
 };
+
 export default LikeProfile;
