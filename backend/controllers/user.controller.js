@@ -1,3 +1,5 @@
+import User from "../models/user.model.js";
+
 export const getUserProfileandRepos = async (req, res) => {
   const { username } = req.params;
   try {
@@ -28,30 +30,56 @@ export const getUserProfileandRepos = async (req, res) => {
 export const likeProfile = async (req, res) => {
   try {
     const { username } = req.params;
-    const user = await User.findById(req.user._id.toString());
-    console.log(user, "auth user");
-    const userToLike = await User.findOne({ username });
+    const authUser = await User.findById(req.user._id.toString()); // The logged-in user
+    console.log(authUser, "Authenticated user");
 
+    // Check if the user to like exists in the local database
+    let userToLike = await User.findOne({ username });
+
+    // If the user is not found in the local database, fetch from GitHub and add to the database
     if (!userToLike) {
-      return res.status(404).json({ error: "User is not a member" });
+      console.log("User not found in local database, fetching from GitHub...");
+
+      const userRes = await fetch(`https://api.github.com/users/${username}`);
+      if (!userRes.ok) {
+        return res.status(404).json({ error: "User not found on GitHub" });
+      }
+
+      const gitHubUser = await userRes.json();
+
+      // Create a new user in the local database with the GitHub user details
+      userToLike = new User({
+        username: gitHubUser.login,
+        profileUrl: gitHubUser.html_url,
+        avatarUrl: gitHubUser.avatar_url,
+        createdAt: Date.now(), // Record the current timestamp
+      });
+
+      await userToLike.save(); // Save the new user to the database
+      console.log("User successfully saved to the local database.");
     }
 
-    if (user.likedProfiles.includes(userToLike.username)) {
-      return res.status(400).json({ error: "User already liked" });
+    // Check if the authenticated user already liked the profile
+    if (authUser.likedProfiles.includes(userToLike.username)) {
+      return res.status(400).json({ error: "You already liked this user." });
     }
 
+    // Add the authenticated user's like to the profile
     userToLike.likedBy.push({
-      username: user.username,
-      avatarUrl: user.avatarUrl,
+      username: authUser.username,
+      avatarUrl: authUser.avatarUrl,
       likedDate: Date.now(),
     });
-    user.likedProfiles.push(userToLike.username);
 
-    await Promise.all([userToLike.save(), user.save()]);
+    authUser.likedProfiles.push(userToLike.username);
 
-    res.status(200).json({ message: "User liked successfully" });
+    // Save the changes to both users
+    await Promise.all([userToLike.save(), authUser.save()]);
+
+    return res.status(200).json({ message: "User liked successfully!" });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error(error.message);
+    return res.status(500).json({ error: error.message });
   }
 };
 
